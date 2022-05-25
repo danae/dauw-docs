@@ -2,6 +2,15 @@
 Control flow
 ============
 
+Utility rules
+=============
+
+The following syntax grammar describes utility rules that are used throughout the other syntax grammars in this chapter and the following chapters::
+
+    parameters            → (IDENTIFIER ':' type (',' IDENTIFIER ':' type)*)?
+    arguments             → (assignment (',' assignment)*)?
+
+
 Modules and top-level expressions
 =================================
 

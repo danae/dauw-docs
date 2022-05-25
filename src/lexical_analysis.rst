@@ -34,23 +34,23 @@ Identifiers and keywords
 
 Identifiers are described by the following lexical grammar::
 
-    IDENTIFIER          → ASCII_IDENTIFIER | STROPPED_IDENTIFIER
-    ASCII_IDENTIFIER    → (ALPHA | '_') ( ALPHA | DIGIT | '_')*
-    STROPPED_IDENTIFIER → '`' <any source character except '`' or newline> '`'
-    ALPHA               → 'a'...'z' | 'A'...'Z'
-    DIGIT               → NONZERODIGIT | '0'
-    NONZERODIGIT        → '1'...'9'
-    HEXDIGIT            → DIGIT | 'a'...'f' | 'A'...'F'
+    IDENTIFIER            → ASCII_IDENTIFIER | STROPPED_IDENTIFIER
+    ASCII_IDENTIFIER      → (ALPHA | '_') ( ALPHA | DIGIT | '_')*
+    STROPPED_IDENTIFIER   → '`' <any source character except '`' or newline> '`'
+    ALPHA                 → 'a'...'z' | 'A'...'Z'
+    DIGIT                 → NONZERODIGIT | '0'
+    NONZERODIGIT          → '1'...'9'
+    HEXDIGIT              → DIGIT | 'a'...'f' | 'A'...'F'
 
 Identifiers must start with an ASCII letter or the underscore and can be followed by any ASCI letter, ASCII digit or underscore. To use identifiers outside of the valid range as valid identifiers, such as operator symbols, they can be `stropped <https://en.wikipedia.org/wiki/Stropping_(syntax)>`_` by writing them betweem backticks. This also works for reserved keywords, which can be transformed into an ordinary identifier this way.
 
 Some examples of valid identifiers in context::
 
-    let foo = 42
-    let pi_plus_two = 5.14_15_92
-    let `false` = 360
-    let `妖精` = "I'm a fairy!"
-    let `✈️` = "Ready for take-off!"
+    def foo = 42
+    def piPlus2 = 5.14_15_92
+    def `false` = 360
+    def `妖精` = "I'm a fairy!"
+    def `✈️` = "Ready for take-off!"
 
 The following words are reserved keywords and cannot be used as ASCII identifiers::
 
@@ -66,10 +66,10 @@ Integer literals
 
 Integer literals are described by the following lexical grammar::
 
-    INT                 → SIGNED_INT | HEX_INT
-    SIGNED_INT          → '-'? UNSIGNED_INT
-    UNSIGNED_INT        → '0' | NONZERODIGIT ('_' | DIGIT)*
-    HEX_INT             → '0' ('x' | 'X') HEXDIGIT ('_' | HEXDIGIT)*
+    INT                   → SIGNED_INT | HEX_INT
+    SIGNED_INT            → '-'? UNSIGNED_INT
+    UNSIGNED_INT          → '0' | NONZERODIGIT ('_' | DIGIT)*
+    HEX_INT               → '0' ('x' | 'X') HEXDIGIT ('_' | HEXDIGIT)*
 
 An integer literal can be either an optionally negative decimal number, or a hexadecimal number preceded by the characters ``0x`` or ``0X``. When determining the numerical value of the literal underscores are ignored; they can be inserted for readability of the number. Note that decimal numbers can't start with leading zeroes, to avoid confusion with (unsupported) octal numbers from other programming languages.
 
@@ -79,38 +79,39 @@ Real literals
 
 Real (or floating point) literals are described by the following lexical grammar::
 
-    REAL                → SIGNED_INT (('.') UNSIGNED_INT EXPONENT?) | EXPONENT)
-    EXPONENT            → ('e' | 'E') ('+' | '-')? UNSIGNED_INT
+    REAL                  → SIGNED_INT (('.') UNSIGNED_INT EXPONENT?) | EXPONENT)
+    EXPONENT              → ('e' | 'E') ('+' | '-')? UNSIGNED_INT
 
 A real literal is an optionally negative decimal number, followed by a decimal fractional part, a optionally signed decimal exponent preceded by the character ``e`` or ``E``, or both. As in integer literals, leading zeroes are not permitted and underscores are supported for readability.
 
 
-Character and string literals
-=============================
+Rune and string literals
+========================
 
-Character and string literals are described by the following lexical grammar::
+Rune and string literals are described by the following lexical grammar::
 
-    CHAR                → "'" CHAR_CHAR | ESCAPE_SEQ "'"
-    CHAR_CHAR           → <any source character except "'", '\' or newline>
-    STRING              → '"' (STRING_CHAR | ESCAPE_SEQ)* '"'
-    STRING_CHAR         → <any source character except '"', '\' or newline>
-    ESCAPE_SEQ          → '\' ("'" | '"' | '\' | 'b' | 'f' | 'n' | 'r' | 't' | 'u' '{' HEXDIGIT+ '}')
+    RUNE                  → "'" RUNE_CHAR | RUNE_ESCAPE_SEQ "'"
+    RUNE_CHAR             → <any source character except "'", '\' or newline>
+    RUNE_ESCAPE_SEQ       → '\' ("'" | '\' | 'b' | 'f' | 'n' | 'r' | 't' | 'u' '{' HEXDIGIT{1,6} '}')
+    STRING                → '"' (STRING_CHAR | STRING_ESCAPE_SEQ)* '"'
+    STRING_CHAR           → <any source character except '"', '\' or newline>
+    STRING_ESCAPE_SEQ     → '\' ('"' | '\' | 'b' | 'f' | 'n' | 'r' | 't' | 'u' '{' HEXDIGIT{1,6} '}')
 
-Character literals denote a single Unicode code-point and are delimited by single quotes ``''``. String literals denote a sequence of Unicode code points and are delimited by double quotes ``""``.
+Rune literals denote a single Unicode code-point and are delimited by single quotes ``''``. String literals denote a sequence of Unicode code points and are delimited by double quotes ``""``.
 
-The following escape sequences are supported in character and string literals, which are mostly the same as supported by the `JSON standard <https://www.json.org/json-en.html>`_:
+The following escape sequences are supported in rune and string literals, which are mostly the same as supported by the `JSON standard <https://www.json.org/json-en.html>`_:
 
 ===============  ===========
 Escape sequence  Description
 ===============  ===========
-``\'``           Single quote
-``\"``           Double quote
+``\'``           Single quote (only in rune literals)
+``\"``           Double quote (only in string literals)
 ``\\``           Backslash (in order to output a regular backslash)
 ``\b``           Backspace (ASCII ``BS``)
 ``\f``           Form feed (ASCII ``FF``)
 ``\n``           Line feed/newline (ASCII ``LF``)
 ``\r``           Carriage return (ASCII ``CR``)
-``\t``           Horizontal tab (ASCII ``TAB``)
+``\t``           Horizontal tab (ASCII ``HT``)
 ``\u{···}``      Unicode code point specified by 1 to 6 hex digits
 ===============  ===========
 
@@ -120,9 +121,10 @@ Operators and delimiters
 
 The following sequences of symbols are used as operators::
 
-    =   ==  <>  ~   <   <=  >   >=  <=> ..
-    +   -   *   /   //  %   ?   #   $
+    =    ==   !=   ===  !==  <    <=   >    >=   =~
+    !~   <=>  +    -    *    /    //   %    #    $
+    |    &    ?
 
 The following tokens serve as delimiters in the grammar or are otherwise significant to the lexical analyzer::
 
-    (   )   {   }   [   ]   ,   .   :   \
+    (    )    {    }    [    ]    ,    .    :    \
