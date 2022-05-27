@@ -136,7 +136,7 @@ The binary ``//`` and ``%`` operators yield the floor quotient and remainder of 
 
 
 Relational operators
-====================
+--------------------
 
 The following binary operators are used for relational comparison::
 
@@ -159,7 +159,7 @@ The binary ``===`` operator yields a boolean result that represents if its opera
 
 
 Logic operators
-===============
+---------------
 
 The following binary operators are used for Boolean operations::
 
