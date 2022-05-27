@@ -15,8 +15,8 @@ Dauw is an indentation sensitive language, which means that control structures i
 
 The lexical analyzer produces `INDENT` and `DEDENT` tokens based on the amount of spaces at the start of each line in the source code:
 
-- If the amount of spaces is bigger than the amount in the previous line, then the lexer produces an `INDENT` token and pushes that amount on the indentation stack. Should the lexer encounter indentation on the first line, it reports a ``SyntaxError``.
-- Similarly, if the amount of spaces is less than the amount in the previous line, the lexer produces a `DEDENT` token for every item on the indentation stack that is bigger than the amount on the current line. If the amount of spaces doesn't align with a previous amount, then the lexer reports a ``SyntaxError``.
+* If the amount of spaces is bigger than the amount in the previous line, then the lexer produces an `INDENT` token and pushes that amount on the indentation stack. Should the lexer encounter indentation on the first line, it reports a ``SyntaxError``.
+* Similarly, if the amount of spaces is less than the amount in the previous line, the lexer produces a `DEDENT` token for every item on the indentation stack that is bigger than the amount on the current line. If the amount of spaces doesn't align with a previous amount, then the lexer reports a ``SyntaxError``.
 
 Except at the start of a line or in string or character literals, the space and horizontal tab characters are used to separate tokens if their concatenation could otherwise be interpreted as a different token.
 
@@ -24,7 +24,7 @@ Except at the start of a line or in string or character literals, the space and 
 Comments
 ========
 
-An inline comment starts with ``--`` and runs until the end of a line. Dauw has no support for block-style comments. Presumed comments in string or regex literals are not lexed as comments, but as part of those literals. Comments that appear directly above a declaration are lexed as documentation strings; comments in other places are ignored by the parser.
+An inline comment starts with ``--`` and runs until the end of a line. Dauw has no support for block-style comments. Presumed comments in stropped identifiers, string or regex literals are not lexed as comments, but as part of those literals. Comments that appear directly above a declaration are lexed as documentation strings; comments in other places are ignored by the parser.
 
 If the first line of source code starts with `#!`, it is perceived as an `shebang <https://en.wikipedia.org/wiki/Shebang_(Unix)>`_  and ignored by the parser.
 
@@ -42,7 +42,7 @@ Identifiers are described by the following lexical grammar::
     NONZERODIGIT          → '1'...'9'
     HEXDIGIT              → DIGIT | 'a'...'f' | 'A'...'F'
 
-Identifiers must start with an ASCII letter or the underscore and can be followed by any ASCI letter, ASCII digit or underscore. To use identifiers outside of the valid range as valid identifiers, such as operator symbols, they can be `stropped <https://en.wikipedia.org/wiki/Stropping_(syntax)>`_` by writing them betweem backticks. This also works for reserved keywords, which can be transformed into an ordinary identifier this way.
+Identifiers must start with an ASCII letter or the underscore and can be followed by any ASCI letter, ASCII digit or underscore. To use identifiers outside of this range as valid identifiers, such as operator symbols, they can be `stropped <https://en.wikipedia.org/wiki/Stropping_(syntax)>`_` by writing them betweem backticks. This also works for reserved keywords, which can be transformed into an ordinary identifier this way.
 
 Some examples of valid identifiers in context::
 

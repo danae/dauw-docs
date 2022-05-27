@@ -6,17 +6,16 @@ Dauw is a high-level, statically typed, object-oriented, general-purpose scripti
 
 .. toctree::
     :caption: Table of contents
-    :numbered: 2
+    :numbered: 3
     :maxdepth: 2
 
-    lexical_analysis
-    data_types
-    expressions_and_operators
-    control_flow
+    concepts/index
+    language/index
+    errors
     standard_library
 
 .. toctree::
     :caption: Appendices
     :maxdepth: 2
 
-    grammar
+    appendix/grammar
